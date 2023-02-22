@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  service:
+    image: catalog-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: catalog-service
+    ports:
+      - 1000:8080
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=catalog
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=test
+    depends_on:
+      - postgres
+    restart: on-failure
+
+  postgres:
+    container_name: catalog-service-postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: catalog
+    restart: on-failure
